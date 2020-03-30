@@ -1,0 +1,19 @@
+version: "3.1"
+
+services:
+  quickstart:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - 8080:8080
+    depends_on:
+      - mssql
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      SA_PASSWORD: "Password12345"
+      ACCEPT_EULA: "Y"
+    command: /bin/bash /dbinit/docker-entrypoint.sh
+    volumes:
+      - ./dbinit:/dbinit
